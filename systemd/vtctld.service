@@ -1,0 +1,22 @@
+[Unit]
+Description=Vitess vtctld daemon.
+Wants=network-online.target
+After=network-online.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+EnvironmentFile=/etc/systemd/system/vitess.env
+Environment="VTDATAROOT=/var/lib/vitess"
+Type=forking
+KillMode=process
+User=vitess
+Group=vitess
+Delegate=yes
+TimeoutStartSec=0
+Restart=always
+RestartSec=5s
+ExecStart=/usr/local/vitess/scripts/vtctld-up.sh
+ExecStop=/usr/local/vitess/scripts/vtctld-down.sh
+

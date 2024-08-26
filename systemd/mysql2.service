@@ -1,0 +1,20 @@
+[Unit]
+Description=Vitess admin daemon.
+Wants=network-online.target
+After=network-online.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+EnvironmentFile=/etc/systemd/system/vitess.env
+Environment="TABLET_UID=102"
+Environment="VTDATAROOT=/vt/mysql2"
+Type=forking
+KillMode=process
+User=vitess
+Group=vitess
+Delegate=yes
+TimeoutStartSec=0
+ExecStart=/usr/local/vitess/scripts/mysqlctl-up.sh
+ExecStop=/usr/local/vitess/scripts/mysqlctl-down.sh

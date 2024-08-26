@@ -1,0 +1,23 @@
+[Unit]
+Description=Vitess admin daemon.
+Wants=network-online.target
+After=network-online.target
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+EnvironmentFile=/etc/systemd/system/vitess.env
+Environment="KEYSPACE=commerce"
+Environment="SHARD=0"
+Environment="TABLET_UID=102"
+Environment="VTDATAROOT=/vt/mysql2"
+Type=forking
+User=vitess
+Group=vitess
+Delegate=yes
+TimeoutStartSec=0
+PIDFile=/vt/mysql2/vttablet.pid
+ExecStart=/usr/local/vitess/scripts/vttablet-up.sh
+ExecStop=/usr/local/vitess/scripts/vttablet-down.sh
+
