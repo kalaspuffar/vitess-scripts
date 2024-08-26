@@ -1,0 +1,44 @@
+{
+    "vtctlds": [
+        {
+            "host": {
+                "fqdn": "host1:15000",
+                "hostname": "host1:15999"
+            }
+        },
+        {
+            "host": {
+                "fqdn": "host2:15000",
+                "hostname": "host2:15999"
+            }
+        },
+        {
+            "host": {
+                "fqdn": "host3:15000",
+                "hostname": "host3:15999"
+            }
+        }
+    ],
+    "vtgates": [
+        {
+            "host": {
+                "fqdn": "host1:15001",
+                "hostname": "host1:15991"
+            }
+        },
+        {
+            "host": {
+                "fqdn": "host2:15001",
+                "hostname": "host2:15991"
+            }
+        },
+        {
+            "host": {
+                "fqdn": "host3:15001",
+                "hostname": "host3:15991"
+            }
+        }
+
+    ]
+}
+
