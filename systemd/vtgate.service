@@ -1,7 +1,7 @@
 [Unit]
 Description=Vitess admin daemon.
 Wants=network-online.target
-After=network-online.target
+After=mysql1-vtab.service
 
 [Install]
 WantedBy=multi-user.target
@@ -14,6 +14,8 @@ User=vitess
 Group=vitess
 Delegate=yes
 TimeoutStartSec=0
+Restart=always
+RestartSec=10s
 PIDFile=/var/lib/vitess/tmp/vtgate.pid
 ExecStart=/usr/local/vitess/scripts/vtgate-up.sh
 ExecStop=/usr/local/vitess/scripts/vtgate-down.sh

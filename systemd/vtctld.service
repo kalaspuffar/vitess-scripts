@@ -1,7 +1,7 @@
 [Unit]
 Description=Vitess vtctld daemon.
 Wants=network-online.target
-After=network-online.target
+After=etcd.service
 
 [Install]
 WantedBy=multi-user.target
@@ -16,7 +16,8 @@ Group=vitess
 Delegate=yes
 TimeoutStartSec=0
 Restart=always
-RestartSec=5s
+RestartSec=10s
+#ExecStartPre=/bin/bash -c 'until systemctl is-active --quiet etcd.service; do sleep 2; done'
 ExecStart=/usr/local/vitess/scripts/vtctld-up.sh
 ExecStop=/usr/local/vitess/scripts/vtctld-down.sh
 
