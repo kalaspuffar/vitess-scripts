@@ -1,0 +1,9 @@
+{
+  "vitess": [
+    {
+      "UserData": "vitess",
+      "MysqlNativePassword": "*AA1420F182E88B9E5F874F6FBE7459291E8F4601"
+    }
+  ]
+}
+

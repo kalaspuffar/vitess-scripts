@@ -34,6 +34,8 @@ vtgate \
   --grpc_port $grpc_port \
   --mysql_server_port $mysql_server_port \
   --mysql_server_socket_path $mysql_server_socket_path \
+  --mysql_auth_server_impl=static \
+  --mysql_auth_server_static_file=$VTDATAROOT/users.json \
   --cell $cell \
   --cells_to_watch $cell \
   --tablet_types_to_wait PRIMARY,REPLICA \
