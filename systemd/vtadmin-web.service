@@ -9,14 +9,13 @@ WantedBy=multi-user.target
 [Service]
 EnvironmentFile=/etc/systemd/system/vitess.env
 Environment="VTDATAROOT=/var/lib/vitess"
-Type=forking
-KillMode=process
+Type=simple
 User=vitess
 Group=vitess
 Delegate=yes
 TimeoutStartSec=0
 Restart=always
 RestartSec=5s
-ExecStart=/usr/local/vitess/scripts/vtadmin-up.sh
-ExecStop=/usr/local/vitess/scripts/vtadmin-down.sh
-
+ExecStart=bash -c '${VTDATAROOT}/vtadmin/node_modules/.bin/serve \ 
+  --no-clipboard -l 14201 -s "${VTDATAROOT}/vtadmin/build" \
+  > "${VTDATAROOT}/tmp/vtadmin-web.out" 2>&1'

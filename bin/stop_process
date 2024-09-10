@@ -1,4 +1,0 @@
-#!/bin/bash
-
-echo "Stopping $1"
-kill -9 `cat $2`

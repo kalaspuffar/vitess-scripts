@@ -1,0 +1,31 @@
+[Unit]
+Description=Vitess admin daemon.
+Wants=network-online.target
+After=vtctld.service
+
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+EnvironmentFile=/etc/systemd/system/vitess.env
+Environment="VTDATAROOT=/var/lib/vitess"
+Type=simple
+User=vitess
+Group=vitess
+Delegate=yes
+TimeoutStartSec=0
+Restart=always
+RestartSec=5s
+ExecStart=bash -c 'vtadmin \
+  --addr "$HOSTNAME:14200" \
+  --http-origin "http://$HOSTNAME:14201" \
+  --http-tablet-url-tmpl "http://{{ .Tablet.Hostname }}:15{{ .Tablet.Alias.Uid }}" \
+  --tracer "opentracing-jaeger" \
+  --grpc-tracing \
+  --http-tracing \
+  --logtostderr \
+  --alsologtostderr \
+  --rbac \
+  --rbac-config="/var/lib/vitess/vtadmin/config/rbac.yaml" \
+  --cluster "id=local,name=local,discovery=staticfile,discovery-staticfile-path=/var/lib/vitess/vtadmin/config/discovery.json,tablet-fqdn-tmpl=http://{{ .Tablet.Hostname }}:15{{ .Tablet.Alias.Uid }}" \
+  > "${VTDATAROOT}/tmp/vtadmin-api.out" 2>&1'

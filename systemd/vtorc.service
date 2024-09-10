@@ -17,12 +17,12 @@ Delegate=yes
 TimeoutStartSec=0
 Restart=always
 RestartSec=5s
-PIDFile=/var/lib/vitess/tmp/vtorc.pid
+PIDFile=/var/lib/vitess/vtorc.pid
 ExecStart=bash -c 'vtorc \
   $TOPOLOGY_FLAGS \
   --logtostderr \
   --alsologtostderr \
   --config="${VTDATAROOT}/vtorc/config.json" \
-  --pid_file="${VTDATAROOT}/tmp/vtorc.pid" \
+  --pid_file="${VTDATAROOT}/vtorc.pid" \
   --port 16000 \
   > "${VTDATAROOT}/tmp/vtorc.out" 2>&1 &'
