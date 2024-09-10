@@ -11,12 +11,18 @@ EnvironmentFile=/etc/systemd/system/vitess.env
 Environment="TABLET_UID=102"
 Environment="VTDATAROOT=/vt/mysql2"
 Type=forking
-KillMode=process
 User=vitess
 Group=vitess
 Delegate=yes
 TimeoutStartSec=0
 Restart=always
 RestartSec=10s
-ExecStart=/usr/local/vitess/scripts/mysqlctl-up.sh
-ExecStop=/usr/local/vitess/scripts/mysqlctl-down.sh
+PIDFile=/vt/mysql2/tablet/mysql.pid
+ExecStart=bash -c 'mysqlctl \
+ --log_dir $VTDATAROOT/tmp \
+ --tablet_uid $TABLET_UID \
+ --tablet_dir tablet \
+ --mysql_port $[17000 + $TABLET_UID] \
+ --mysql_socket $VTDATAROOT/mysql.sock \
+ start &'
+ExecStop=bash -c 'mysqlctl --tablet_uid $TABLET_UID --tablet_dir tablet shutdown &'

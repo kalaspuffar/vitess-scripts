@@ -1,7 +1,6 @@
 [Unit]
 Description=Vitess vtctld daemon.
 Wants=network-online.target
-After=etcd.service
 
 [Install]
 WantedBy=multi-user.target
@@ -17,7 +16,15 @@ Delegate=yes
 TimeoutStartSec=0
 Restart=always
 RestartSec=10s
-#ExecStartPre=/bin/bash -c 'until systemctl is-active --quiet etcd.service; do sleep 2; done'
-ExecStart=/usr/local/vitess/scripts/vtctld-up.sh
-ExecStop=/usr/local/vitess/scripts/vtctld-down.sh
-
+PIDFile=/var/lib/vitess/tmp/vtctld.pid
+ExecStart=bash -c 'vtctld \
+ $TOPOLOGY_FLAGS \
+ --cell $CELL \
+ --service_map 'grpc-vtctl,grpc-vtctld' \
+ --backup_storage_implementation file \
+ --file_backup_storage_root $VTDATAROOT/backups \
+ --log_dir $VTDATAROOT/tmp \
+ --port 15000 \
+ --grpc_port 15999 \
+ --pid_file $VTDATAROOT/tmp/vtctld.pid \
+  > $VTDATAROOT/tmp/vtctld.out 2>&1 &'

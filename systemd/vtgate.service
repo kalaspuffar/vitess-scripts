@@ -17,6 +17,20 @@ TimeoutStartSec=0
 Restart=always
 RestartSec=10s
 PIDFile=/var/lib/vitess/tmp/vtgate.pid
-ExecStart=/usr/local/vitess/scripts/vtgate-up.sh
-ExecStop=/usr/local/vitess/scripts/vtgate-down.sh
-
+ExecStart=bash -c 'vtgate \
+  $TOPOLOGY_FLAGS \
+  --log_dir $VTDATAROOT/tmp \
+  --log_queries_to_file $VTDATAROOT/tmp/vtgate_querylog.txt \
+  --port 15001 \
+  --grpc_port 15991 \
+  --mysql_server_port 15306  \
+  --mysql_server_socket_path /tmp/mysql.sock \
+  --mysql_auth_server_impl=static \
+  --mysql_auth_server_static_file=$VTDATAROOT/users.json \
+  --cell $CELL \
+  --cells_to_watch $CELL \
+  --tablet_types_to_wait PRIMARY,REPLICA \
+  --service_map 'grpc-vtgateservice' \
+  --pid_file $VTDATAROOT/tmp/vtgate.pid \
+  --enable_buffer \
+  > $VTDATAROOT/tmp/vtgate.out 2>&1 &'
