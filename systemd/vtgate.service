@@ -16,11 +16,11 @@ Delegate=yes
 TimeoutStartSec=0
 Restart=always
 RestartSec=10s
-PIDFile=/var/lib/vitess/tmp/vtgate.pid
+PIDFile=/var/lib/vitess/vtgate.pid
 ExecStart=bash -c 'vtgate \
   $TOPOLOGY_FLAGS \
-  --log_dir $VTDATAROOT/tmp \
-  --log_queries_to_file $VTDATAROOT/tmp/vtgate_querylog.txt \
+  --log_dir $VTDATAROOT/logs \
+  --log_queries_to_file $VTDATAROOT/logs/vtgate_querylog.txt \
   --port 15001 \
   --grpc_port 15991 \
   --mysql_server_port 15306  \
@@ -31,6 +31,6 @@ ExecStart=bash -c 'vtgate \
   --cells_to_watch $CELL \
   --tablet_types_to_wait PRIMARY,REPLICA \
   --service_map 'grpc-vtgateservice' \
-  --pid_file $VTDATAROOT/tmp/vtgate.pid \
+  --pid_file $VTDATAROOT/vtgate.pid \
   --enable_buffer \
-  > $VTDATAROOT/tmp/vtgate.out 2>&1 &'
+  > $VTDATAROOT/logs/vtgate.out 2>&1 &'

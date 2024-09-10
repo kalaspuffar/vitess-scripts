@@ -23,8 +23,8 @@ RestartSec=10s
 PIDFile=/vt/mysql3/vttablet.pid
 ExecStart=bash -c 'vttablet \
  $TOPOLOGY_FLAGS \
- --log_dir $VTDATAROOT/tmp \
- --log_queries_to_file "${VTDATAROOT}/tmp/vttablet_${TABLET_UID}_querylog.txt" \
+ --log_dir $VTDATAROOT/logs \
+ --log_queries_to_file "${VTDATAROOT}/logs/vttablet_${TABLET_UID}_querylog.txt" \
  --tablet-path "${CELL}-${TABLET_UID}" \
  --tablet_dir tablet \
  --tablet_hostname "" \
@@ -41,5 +41,5 @@ ExecStart=bash -c 'vttablet \
  --service_map 'grpc-queryservice,grpc-tabletmanager,grpc-updatestream' \
  --pid_file $VTDATAROOT/vttablet.pid \
  --heartbeat_on_demand_duration=5s \
- > $VTDATAROOT/vttablet.out 2>&1 &'
+ > $VTDATAROOT/logs/vttablet.out 2>&1 &'
 

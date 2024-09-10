@@ -19,10 +19,10 @@ Restart=always
 RestartSec=10s
 PIDFile=/vt/mysql1/tablet/mysql.pid
 ExecStart=bash -c 'mysqlctl \
- --log_dir $VTDATAROOT/tmp \
+ --log_dir $VTDATAROOT/logs \
  --tablet_uid $TABLET_UID \
  --tablet_dir tablet \
  --mysql_port $[17000 + $TABLET_UID] \
  --mysql_socket $VTDATAROOT/mysql.sock \
- start &'
+ start > "${VTDATAROOT}/logs/mysqlctl.out" 2>&1 &'
 ExecStop=bash -c 'mysqlctl --tablet_uid $TABLET_UID --tablet_dir tablet shutdown &'

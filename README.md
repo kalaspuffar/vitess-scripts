@@ -116,7 +116,7 @@ From this directory we will copy over the files to /usr/local/vitess and setting
 ```
 sudo mkdir -p /usr/local/vitess
 sudo cp -r * /usr/local/vitess/
-sudo mkdir -p /var/lib/vitess/tmp
+sudo mkdir -p /var/lib/vitess/logs
 sudo chown -R vitess:vitess /var/lib/vitess
 ```
 

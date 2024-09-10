@@ -25,4 +25,4 @@ ExecStart=bash -c 'vtorc \
   --config="${VTDATAROOT}/vtorc/config.json" \
   --pid_file="${VTDATAROOT}/vtorc.pid" \
   --port 16000 \
-  > "${VTDATAROOT}/tmp/vtorc.out" 2>&1 &'
+  > "${VTDATAROOT}/logs/vtorc.out" 2>&1 &'

@@ -16,15 +16,15 @@ Delegate=yes
 TimeoutStartSec=0
 Restart=always
 RestartSec=10s
-PIDFile=/var/lib/vitess/tmp/vtctld.pid
+PIDFile=/var/lib/vitess/vtctld.pid
 ExecStart=bash -c 'vtctld \
  $TOPOLOGY_FLAGS \
  --cell $CELL \
  --service_map 'grpc-vtctl,grpc-vtctld' \
  --backup_storage_implementation file \
  --file_backup_storage_root $VTDATAROOT/backups \
- --log_dir $VTDATAROOT/tmp \
+ --log_dir $VTDATAROOT/logs \
  --port 15000 \
  --grpc_port 15999 \
- --pid_file $VTDATAROOT/tmp/vtctld.pid \
-  > $VTDATAROOT/tmp/vtctld.out 2>&1 &'
+ --pid_file $VTDATAROOT/vtctld.pid \
+  > $VTDATAROOT/logs/vtctld.out 2>&1 &'

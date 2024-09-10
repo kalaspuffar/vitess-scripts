@@ -18,4 +18,4 @@ Restart=always
 RestartSec=5s
 ExecStart=bash -c '${VTDATAROOT}/vtadmin/node_modules/.bin/serve \ 
   --no-clipboard -l 14201 -s "${VTDATAROOT}/vtadmin/build" \
-  > "${VTDATAROOT}/tmp/vtadmin-web.out" 2>&1'
+  > "${VTDATAROOT}/logs/vtadmin-web.out" 2>&1'
