@@ -10,6 +10,7 @@ WantedBy=multi-user.target
 EnvironmentFile=/etc/systemd/system/vitess.env
 Environment="TABLET_UID=102"
 Environment="VTDATAROOT=/vt/mysql2"
+RuntimeDirectory=vitess
 Type=forking
 User=vitess
 Group=vitess
@@ -17,7 +18,7 @@ Delegate=yes
 TimeoutStartSec=0
 Restart=always
 RestartSec=10s
-PIDFile=/vt/mysql2/tablet/mysql.pid
+PIDFile=/run/vitess/mysql_102.pid
 ExecStart=bash -c 'mysqlctl \
  --log_dir $VTDATAROOT/logs \
  --tablet_uid $TABLET_UID \

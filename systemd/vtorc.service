@@ -9,6 +9,7 @@ WantedBy=multi-user.target
 [Service]
 EnvironmentFile=/etc/systemd/system/vitess.env
 Environment="VTDATAROOT=/var/lib/vitess"
+RuntimeDirectory=vitess
 Type=forking
 KillMode=process
 User=vitess
@@ -17,12 +18,12 @@ Delegate=yes
 TimeoutStartSec=0
 Restart=always
 RestartSec=5s
-PIDFile=/var/lib/vitess/vtorc.pid
+PIDFile=/run/vitess/vtorc.pid
 ExecStart=bash -c 'vtorc \
   $TOPOLOGY_FLAGS \
   --logtostderr \
   --alsologtostderr \
   --config="${VTDATAROOT}/vtorc/config.json" \
-  --pid_file="${VTDATAROOT}/vtorc.pid" \
+  --pid_file="/run/vitess/vtorc.pid" \
   --port 16000 \
   > "${VTDATAROOT}/logs/vtorc.out" 2>&1 &'

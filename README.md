@@ -179,6 +179,10 @@ cd /var/lib/vitess/vtadmin/
 Make sure the build was successful.
 Log out of the vitess account to the account that have sudo access again.
 
+sudo mkdir /run/vitess
+sudo chown vitess:vitess /run/vitess
+
+
 #### Creating a cell
 
 A cell is a geograpical place that will encapsulate for quick access. So if we fetch data in one cell we will first look for it in this cell and if we can fetch it we will contact other cells to find the data.
@@ -223,7 +227,7 @@ We also copy the systemd start up scripts over to the directory used for service
 sudo cp vitess-scripts/systemd/* /etc/systemd/system
 ```
 
-Next we fetch all the scripts from my repository for systemd and update them as needed for the system. The files `vitess.env`, `mysql[1-3].service` and `mysql[1-3]-vtab.service` needs updating for your current installation.
+Next we fetch all the scripts from my repository for systemd and update them as needed for the system. The files `vitess.env`, `mysql[1-3].service` and `mysql[1-3]-vtab.service` needs updating for your current installation. Setting unique UID and other values in the vitess environment.
 ```
 cd /etc/systemd/system
 sudo vi vitess.env
