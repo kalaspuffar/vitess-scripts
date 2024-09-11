@@ -64,7 +64,6 @@ We run the controller client command on the internal server to add new cell info
 
 #### Prepare Mysql
 
-
 First we need to install a couple of packages, curl and wget for downloading packages and last but not least gnupg for crypto and unzip for a package we need later.
 
 ```
@@ -323,6 +322,14 @@ sudo systemctl daemon-reload
 sudo systemctl start vtctld
 sudo systemctl status vtctld
 ```
+
+It's helpful to have commands in your path let's add it.
+
+```
+echo "export PATH=/usr/local/vitess/bin:${PATH}" >> ~/.profile
+source ~/.profile
+```
+
 
 **!!! IMPORTANT !!!**
 When the controller is running we need to create our keyspace. This needs to be done before we start any other services.
