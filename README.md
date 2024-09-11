@@ -41,13 +41,28 @@ sudo systemctl restart etcd
 sudo systemctl status etcd
 ```
 
+```
+version=20.0.1
+file=vitess-${version}-003c441.tar.gz
+wget https://github.com/vitessio/vitess/releases/download/v${version}/${file}
+tar -xzf ${file}
+cd ${file/.tar.gz/}
+```
+
+We run the controller client command on the internal server to add new cell information. Important is to define the addresses to the RPC port of our ETCD cluster correctly or we will have problems when our services want to connect later on. This will create the first cell called zone1.
+
+```
+./bin/vtctldclient --server internal AddCellInfo --root "/vitess/zone1" --server-address "192.168.1.1:2380,192.168.1.2:2380,192.168.1.3:2380" "zone1"
+```
+
+
 #### Prepare Mysql
 
 
 First we need to install a couple of packages, curl and wget for downloading packages and last but not least gnupg for crypto and unzip for a package we need later.
 
 ```
-sudo apt install -y curl wget gnupg unzip
+sudo apt install -y curl wget gnupg unzip lsb-release git
 ```
 
 We download the MySQL configuration package and install it. Make sure to choose the mysql-8.0 option when installing.
@@ -60,7 +75,7 @@ After we installed the configuration package we can update our repository and in
 
 ```
 sudo apt update
-sudo apt install mysql-server
+sudo apt install -y mysql-server
 sudo systemctl disable mysql
 sudo systemctl stop mysql
 ```
@@ -87,6 +102,8 @@ export NVM_DIR="$HOME/.nvm"
 nvm install 20
 nvm use 20
 ```
+
+Log out of the vitess account to the account that have sudo access again.
 
 #### AppArmor
 
@@ -156,8 +173,11 @@ Enter the directory of the vtadmin interface and run the build script.
 
 ```
 cd /var/lib/vitess/vtadmin/
-./build
+./build.sh
 ```
+
+Make sure the build was successful.
+Log out of the vitess account to the account that have sudo access again.
 
 #### Creating a cell
 
@@ -168,12 +188,6 @@ First we setup our path so we have the commands available.
 ```
 echo "export PATH=/usr/local/vitess/bin:${PATH}" >> ~/.profile
 source ~/.profile 
-```
-
-We run the controller client command on the internal server to add new cell information. Important is to define the addresses to the RPC port of our ETCD cluster correctly or we will have problems when our services want to connect later on. This will create the first cell called zone1.
-
-```
-vtctldclient --server internal AddCellInfo --root "/vitess/zone1" --server-address "192.168.1.1:2380,192.168.1.2:2380,192.168.1.3:2380" "zone1"
 ```
 
 ### Preparing scripts
@@ -220,6 +234,42 @@ sudo vi mysql1-vtab.service
 sudo vi mysql2-vtab.service
 sudo vi mysql3-vtab.service
 ```
+
+### Initiate the databases
+
+Now let's change over to the vitess user and initiate the database directories.
+
+```
+sudo su vitess
+```
+
+Initate databases on host1
+```
+cd ~
+/usr/local/vitess/scripts/mysqlctl-init.sh 101 /vt/mysql1
+/usr/local/vitess/scripts/mysqlctl-init.sh 102 /vt/mysql2
+/usr/local/vitess/scripts/mysqlctl-init.sh 103 /vt/mysql3
+```
+
+Initate databases on host2
+```
+cd ~
+/usr/local/vitess/scripts/mysqlctl-init.sh 201 /vt/mysql1
+/usr/local/vitess/scripts/mysqlctl-init.sh 202 /vt/mysql2
+/usr/local/vitess/scripts/mysqlctl-init.sh 203 /vt/mysql3
+```
+
+Initate databases on host3
+```
+cd ~
+/usr/local/vitess/scripts/mysqlctl-init.sh 301 /vt/mysql1
+/usr/local/vitess/scripts/mysqlctl-init.sh 302 /vt/mysql2
+/usr/local/vitess/scripts/mysqlctl-init.sh 303 /vt/mysql3
+```
+
+Log out of the vitess account to the account that have sudo access again.
+
+#### Setup discovery configuration
 
 Lastly we will update `discovery.json` in the `/var/lib/vitess/vtadmin/config` directory to specify all the hosts we want to run controllers and vtgates on. This is so the admin interface will find them easily.
 
@@ -360,5 +410,5 @@ SELECT @@global.read_only;
 If we need to reset and want to remove the keyspace this is done in the command line interface. The shard can easily be removed from the admin interface but this command will remove an empty keyspace.
 
 ```
-vtctldclient --server localhost:15999 DeleteKeyspace commerce
+vtctldclient --server localhost:15999 DeleteKeyspace -r commerce
 ```

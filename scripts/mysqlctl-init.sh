@@ -8,7 +8,7 @@ MYSQL_PORT=$[17000 + $TABLET_UID]
 mkdir -p $VTDATAROOT/backups
 mkdir -p $VTDATAROOT/logs
 
-mysqlctl \
+/usr/local/vitess/bin/mysqlctl \
  --log_dir $VTDATAROOT/logs \
  --tablet_uid $TABLET_UID \
  --tablet_dir tablet \
@@ -16,6 +16,6 @@ mysqlctl \
  --mysql_socket $VTDATAROOT/mysql.sock \
  init
 
-mysqlctl --tablet_uid $TABLET_UID --tablet_dir tablet shutdown
+/usr/local/vitess/bin/mysqlctl --tablet_uid $TABLET_UID --tablet_dir tablet shutdown
 
 echo "Initialized MySQL for tablet $TABLET_UID..."
