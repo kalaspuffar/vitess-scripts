@@ -21,7 +21,7 @@ Delegate=yes
 TimeoutStartSec=0
 Restart=always
 RestartSec=10s
-PIDFile=/run/vitess/vttablet.pid
+PIDFile=/run/vitess/mysql2_vtab.pid
 ExecStart=bash -c 'vttablet \
  $TOPOLOGY_FLAGS \
  --log_dir $VTDATAROOT/logs \
@@ -40,6 +40,6 @@ ExecStart=bash -c 'vttablet \
  --grpc_port $[16000 + $TABLET_UID] \
  --db_port $[17000 + $TABLET_UID] \
  --service_map 'grpc-queryservice,grpc-tabletmanager,grpc-updatestream' \
- --pid_file /run/vitess/vttablet.pid \
+ --pid_file /run/vitess/mysql2_vtab.pid \
  --heartbeat_on_demand_duration=5s \
  > $VTDATAROOT/logs/vttablet.out 2>&1 &'

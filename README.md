@@ -9,7 +9,7 @@ This should be a separate cluster from the Vitess cluster.
 First we need to install a couple of packages, etcd for the topology.
 
 ```
-sudo apt install -y etcd-server etcd-client 
+sudo apt install -y etcd-server etcd-client wget
 ```
 
 #### Configure ETCD
@@ -40,6 +40,12 @@ After the configuration we need to restart all 3 services and ensure that we hav
 sudo systemctl restart etcd
 sudo systemctl status etcd
 ```
+
+#### Creating a cell
+
+A cell is a geograpical place that will encapsulate for quick access. So if we fetch data in one cell we will first look for it in this cell and if we can fetch it we will contact other cells to find the data.
+
+First we need to download the vitess repository.
 
 ```
 version=20.0.1
@@ -178,21 +184,6 @@ cd /var/lib/vitess/vtadmin/
 
 Make sure the build was successful.
 Log out of the vitess account to the account that have sudo access again.
-
-sudo mkdir /run/vitess
-sudo chown vitess:vitess /run/vitess
-
-
-#### Creating a cell
-
-A cell is a geograpical place that will encapsulate for quick access. So if we fetch data in one cell we will first look for it in this cell and if we can fetch it we will contact other cells to find the data.
-
-First we setup our path so we have the commands available.
-
-```
-echo "export PATH=/usr/local/vitess/bin:${PATH}" >> ~/.profile
-source ~/.profile 
-```
 
 ### Preparing scripts
 
@@ -415,4 +406,11 @@ If we need to reset and want to remove the keyspace this is done in the command 
 
 ```
 vtctldclient --server localhost:15999 DeleteKeyspace -r commerce
+```
+
+First we setup our path so we have the commands available.
+
+```
+echo "export PATH=/usr/local/vitess/bin:${PATH}" >> ~/.profile
+source ~/.profile 
 ```
