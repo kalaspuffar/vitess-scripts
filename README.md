@@ -241,25 +241,25 @@ sudo su vitess
 Initate databases on host1
 ```
 cd ~
-/usr/local/vitess/scripts/mysqlctl-init.sh 101 /vt/mysql1
-/usr/local/vitess/scripts/mysqlctl-init.sh 102 /vt/mysql2
-/usr/local/vitess/scripts/mysqlctl-init.sh 103 /vt/mysql3
+/usr/local/vitess/scripts/mysqlctl-init.sh 101 /vt/mysql1 /run/vitess/mysql1.pid
+/usr/local/vitess/scripts/mysqlctl-init.sh 102 /vt/mysql2 /run/vitess/mysql2.pid
+/usr/local/vitess/scripts/mysqlctl-init.sh 103 /vt/mysql3 /run/vitess/mysql3.pid
 ```
 
 Initate databases on host2
 ```
 cd ~
-/usr/local/vitess/scripts/mysqlctl-init.sh 201 /vt/mysql1
-/usr/local/vitess/scripts/mysqlctl-init.sh 202 /vt/mysql2
-/usr/local/vitess/scripts/mysqlctl-init.sh 203 /vt/mysql3
+/usr/local/vitess/scripts/mysqlctl-init.sh 201 /vt/mysql1 /run/vitess/mysql1.pid
+/usr/local/vitess/scripts/mysqlctl-init.sh 202 /vt/mysql2 /run/vitess/mysql2.pid
+/usr/local/vitess/scripts/mysqlctl-init.sh 203 /vt/mysql3 /run/vitess/mysql3.pid
 ```
 
 Initate databases on host3
 ```
 cd ~
-/usr/local/vitess/scripts/mysqlctl-init.sh 301 /vt/mysql1
-/usr/local/vitess/scripts/mysqlctl-init.sh 302 /vt/mysql2
-/usr/local/vitess/scripts/mysqlctl-init.sh 303 /vt/mysql3
+/usr/local/vitess/scripts/mysqlctl-init.sh 301 /vt/mysql1 /run/vitess/mysql1.pid
+/usr/local/vitess/scripts/mysqlctl-init.sh 302 /vt/mysql2 /run/vitess/mysql2.pid
+/usr/local/vitess/scripts/mysqlctl-init.sh 303 /vt/mysql3 /run/vitess/mysql3.pid
 ```
 
 Log out of the vitess account to the account that have sudo access again.
@@ -406,11 +406,4 @@ If we need to reset and want to remove the keyspace this is done in the command 
 
 ```
 vtctldclient --server localhost:15999 DeleteKeyspace -r commerce
-```
-
-First we setup our path so we have the commands available.
-
-```
-echo "export PATH=/usr/local/vitess/bin:${PATH}" >> ~/.profile
-source ~/.profile 
 ```

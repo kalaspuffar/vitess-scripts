@@ -18,4 +18,6 @@ mkdir -p $VTDATAROOT/logs
 
 /usr/local/vitess/bin/mysqlctl --tablet_uid $TABLET_UID --tablet_dir tablet shutdown
 
+sed -i "s+pid-file[^\n]*+pid-file = $3+" $VTDATAROOT/tablet/my.cnf
+
 echo "Initialized MySQL for tablet $TABLET_UID..."
